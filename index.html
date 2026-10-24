@@ -102,6 +102,9 @@
 </div></div>
 <script>
 const LAT=-2.976,LON=104.775,IHT=2,GAP=5,FARDHU=10;
+const CFG_URL=["https://qiblatin.local/api/qiblatin/config",
+  "https://raw.githubusercontent.com/rizkyutama17/tv-masjid-qiblatin/main/kegiatan.json"];
+let CFG=null;
 const SUNNAH={subuh:2,dzuhur:4,ashar:0,maghrib:2,isya:2};
 const P=[["imsak","IMSAK"],["subuh","SUBUH"],["terbit","TERBIT"],["dzuhur","DZUHUR"],
   ["ashar","ASHAR"],["maghrib","MAGHRIB"],["isya","ISYA"]];
@@ -128,7 +131,21 @@ function asrT(jd,t){const d=sun(jd+t)[0];
 function F(h){let H=Math.floor(h),M=Math.round((h-H)*60)+IHT;if(M>=60){H++;M-=60}return pad(H%24)+":"+pad(M)}
 function jul(y,m,d){if(m<=2){y--;m+=12}const a=Math.floor(y/100);
   return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+2-a+Math.floor(a/4)-1524.5}
-function jadwal(d){const jd=jul(d.getFullYear(),d.getMonth()+1,d.getDate())-LON/360,tz=-d.getTimezoneOffset()/60;
+async function jadwalSrv(d){const t=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  for(const u of ["https://qiblatin.local/api/qiblatin/sholat?lat="+LAT+"&lon="+LON+"&tgl="+t,
+    "https://api.myquran.com/v2/sholat/jadwal/0816/"+d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate()]){
+    try{const r=await fetch(u,{cache:"no-store",headers:{"User-Agent":"QiblatinTV/1.0"}});if(!r.ok)continue;
+      const j=await r.json();const o=j.jadwal||j.data&&j.data.jadwal||j;
+      if(o&&o.subuh&&o.isya)return o}catch(e){}}
+  return null}
+let JS=null,JD="";
+async function jadwalEff(d){const t=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  if(JS&&JD===t)return JS;
+  const s=await jadwalSrv(d);
+  if(s){JS={imsak:s.imsak||s.subuh,subuh:s.subuh,terbit:s.terbit,dzuhur:s.dzuhur||s.duhur,
+    ashar:s.ashar||s.asr,maghrib:s.maghrib||s.magrib,isya:s.isya};JD=t;return JS}
+  return jadwalLoc(d)}
+function jadwalLoc(d){const jd=jul(d.getFullYear(),d.getMonth()+1,d.getDate())-LON/360,tz=-d.getTimezoneOffset()/60;
   const su=fixH(sAT(jd,20,5/24,true)+tz-LON/15),noon=midD(jd,12/24);
   const tb=fixH(noon-(sAT(jd,.833,6/24,false)-noon)+tz-LON/15);
   return {imsak:F(su-10/60),subuh:F(su),terbit:F(tb),
@@ -144,29 +161,48 @@ function ram(d){const s=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDat
     if(s>=r.s&&s<=es)return "PUASA "+(Math.round((d-new Date(r.s))/864e5)+1)+"/"+r.n+" · "}return""}
 const hm=s=>{const[a,b]=s.split(":").map(Number);return a*3600+b*60};
 let ad=null,lk="",ld="";
-/* ============ PETUGAS JUMAT (edit tiap pekan) ============ */
+/* ============ PETUGAS JUMAT (bisa dioverride server) ============ */
 const JUMAT={muazin:"Ust. Ahmad",khotib:"KH. Abdullah"};
 function jumatNext(d){const t=new Date(d);let add=(5-t.getDay()+7)%7;if(add===0)add=7;t.setDate(t.getDate()+add);return t}
-/* ============ KEGIATAN (edit sesuai jadwal masjid) ============ */
-const KEGIATAN=[
+async function loadCfg(){
+  for(const u of CFG_URL){
+    try{const r=await fetch(u,{cache:"no-store"});if(!r.ok)continue;
+      const j=await r.json();if(!j||!j.version)continue;
+      const old=parseInt(localStorage.getItem("cfgV")||"0");
+      if(j.version<old)continue;
+      CFG=j;localStorage.setItem("cfgV",j.version);localStorage.setItem("cfg",JSON.stringify(j));
+      applyCfg();return}catch(e){}
+  }
+  try{const c=localStorage.getItem("cfg");if(c){CFG=JSON.parse(c);applyCfg()}}catch(e){}
+}
+function applyCfg(){if(!CFG)return;
+  if(CFG.jumat){JUMAT.muazin=CFG.jumat.muazin||JUMAT.muazin;JUMAT.khotib=CFG.jumat.khotib||JUMAT.khotib}
+  if(CFG.durasi){if(CFG.durasi["gap menit"])GAP=CFG.durasi["gap menit"];
+    if(CFG.durasi["fardhu menit"])FARDHU=CFG.durasi["fardhu menit"]}
+  if(Array.isArray(CFG.kegiatan)&&CFG.kegiatan.length)KEG=CFG.kegiatan;
+  if(Array.isArray(CFG.running_text)&&CFG.running_text.length){
+    $("txin").innerHTML=CFG.running_text.map((t,i)=>i%2?'<span class="g">•</span><span>'+t+'</span>':'<span>'+t+'</span>').join('')}}
+setInterval(loadCfg,10*60*1000);
+/* ============ KEGIATAN (default lokal; server bisa override) ============ */
+let KEG=[
   {hari:[0],judul:"Ceramah Subuh",ket:"Ba'da Subuh",ust:"Ust. Ahmad"},
   {hari:[5],judul:"Sholat Jumat",ket:"12:00 WIB",ust:"KH. Abdullah"},
-  {hari:[2,4],judul:"Pengajian Rutin",ket:"Ba'da Maghrib",ust:"Ust. Hidayat"},
-  /* sekali jalan: {tgl:"2026-11-15",judul:"Tabligh Akbar",ket:"08:00 WIB",ust:"Ust. Fulan"}, */
+  {hari:[2,4],judul:"Pengajian Rutin",ket:"Ba'da Maghrib",ust:"Ust. Hidayat"}
+  /* sekali jalan: {tgl:"2026-11-15",judul:"Tabligh Akbar",ket:"08:00 WIB",ust:"Ust. Fulan"} */
 ];
 function renderKeg(d){const box=$("ev");box.innerHTML="";
   const wd=d.getDay(),hr=HARI[wd]+", "+d.getDate()+" "+BLN[d.getMonth()]+" "+d.getFullYear();
   const ts=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
   box.innerHTML='<div class="ev"><div class="t">Hari ini · <b>'+hr+'</b></div></div>';
-  const ada=KEGIATAN.filter(k=>(k.tgl&&k.tgl===ts)||(!k.tgl&&k.hari.includes(wd)));
+  const ada=KEG.filter(k=>(k.tgl&&k.tgl===ts)||(!k.tgl&&k.hari.includes(wd)));
   (ada.length?[{judul:"-- TIDAK ADA --",ket:"",ust:"",tgl:""}]:ada).forEach(k=>{
     const tgl=k.tgl||(d.getDate()+' '+BLN[d.getMonth()]+' '+d.getFullYear());
     box.innerHTML+='<div class="ev"><div class="t">'+k.judul+'</div>'+(k.ket?'<div class="d">'+tgl+' · '+k.ket+'</div><div class="u">'+k.ust+'</div>':'')+'</div>'});
-  const nx=KEGIATAN.map(k=>{let a=(k.hari.map(h=>(h-wd+7)%7).sort((a,b)=>a-b)[0]);return {k,a}})
+  const nx=KEG.filter(k=>k.hari).map(k=>{let a=(k.hari.map(h=>(h-wd+7)%7).sort((a,b)=>a-b)[0]);return {k,a}})
     .filter(x=>x.a>0).sort((x,y)=>x.a-y.a)[0];
   if(nx){const t=new Date(d);t.setDate(t.getDate()+nx.a);
     box.innerHTML+='<div class="ev"><div class="t">Berikutnya · <b>'+HARI[t.getDay()]+', '+t.getDate()+' '+BLN[t.getMonth()]+'</b></div><div class="d">'+nx.k.judul+' · '+nx.k.ket+'</div><div class="u">'+nx.k.ust+'</div></div>'}}
-function tick(){const d=new Date(),J=jadwal(d);
+async function tick(){const d=new Date(),J=await jadwalEff(d);
   renderKeg(d);
   $("jam").innerHTML=pad(d.getHours())+"<span>:</span>"+pad(d.getMinutes());
   $("tm").textContent=HARI[d.getDay()]+", "+d.getDate()+" "+BLN[d.getMonth()]+" "+d.getFullYear();
@@ -187,7 +223,12 @@ function tick(){const d=new Date(),J=jadwal(d);
     el.className="c"+(k===nx.k?" nx":s<=ns?" ps":"");
     el.innerHTML='<div class="n">'+l+'</div><div class="t">'+J[k]+'</div>';sc.appendChild(el)});
   if(rm===0){const t=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
-    if(lk!==nx.k||ld!==t){lk=nx.k;ld=t;startAd(nx.l)}}
+    if(lk!==nx.k||ld!==t){lk=nx.k;ld=t;
+      if(nx.k==="dzuhur"&&d.getDay()===5){ad={f:3,dl:Date.now()+FARDHU*6e4};$("adz").classList.add("on");
+        $("an").textContent="SHOLAT JUMAT";$("af").textContent="SHOLAT JUMAT";
+        $("as").textContent="SELAMAT MENUNAIKAN SHOLAT JUMAT";$("ax").textContent="";
+        $("ac").style.display="none";$("sim2").style.display="none"}
+      else startAd(nx.l)}}
   if(ad){const r=ad.dl-Date.now();
     $("ac").textContent=ad.f===3?"--:--":pad(Math.max(0,Math.floor(r/6e4)))+":"+pad(Math.max(0,Math.floor(r%6e4/1e3)));
     if(r<=0){
@@ -216,7 +257,7 @@ $("sim").onclick=()=>{const d=new Date(),J=jadwal(d),ns=d.getHours()*3600+d.getM
   const main=[1,3,4,5,6].map(i=>({k:P[i][0],l:P[i][1],s:hm(J[P[i][0]])}));
   let nx=main.find(x=>x.s>ns);if(!nx)nx={l:"SUBUH"};startAd(nx.l)};
 $("sim2").onclick=()=>{if(ad&&(ad.f===1||ad.f===1.5))doIqamah()};
-tick();setInterval(tick,1000);
+loadCfg().then(()=>{tick()});setInterval(tick,1000);
 </script>
 </body>
 </html>

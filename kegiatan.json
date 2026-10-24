@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "updated_at": "2026-10-24T15:00:00+07:00",
+  "running_text": [
+    "Selamat datang di Masjid Qiblatin",
+    "Matikan dering ponsel",
+    "Jumat 30/10 · Muazin Ust. Ahmad · Khotib KH. Abdullah",
+    "Rapikan shaf"
+  ],
+  "jumat": { "muazin": "Ust. Ahmad", "khotib": "KH. Abdullah" },
+  "durasi": { "gap menit": 5, "fardhu menit": 10 },
+  "kegiatan": [
+    { "hari": [0], "judul": "Ceramah Subuh", "ket": "Ba'da Subuh", "ust": "Ust. Ahmad" },
+    { "hari": [5], "judul": "Sholat Jumat", "ket": "12:00 WIB", "ust": "KH. Abdullah" },
+    { "hari": [2, 4], "judul": "Pengajian Rutin", "ket": "Ba'da Maghrib", "ust": "Ust. Hidayat" }
+  ]
+}

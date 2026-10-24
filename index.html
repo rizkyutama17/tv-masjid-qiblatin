@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>TV Masjid Qiblatin</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;background:#000}
+  body{font-family:'Segoe UI',Arial,sans-serif;color:#f4f2ea;overflow:hidden}
+  #q{width:100vw;height:100vh;display:flex;flex-direction:column;overflow:hidden;background:#06110c;position:relative}
+  #q::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse 90vw 60vh at 18% -8%,rgba(24,92,64,.38),transparent 62%),
+               radial-gradient(ellipse 70vw 50vh at 96% 108%,rgba(20,64,48,.22),transparent 58%)}
+  .in{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh}
+  header{flex:0 0 15vh;display:flex;align-items:center;padding:0 3.5vw;
+    background:rgba(255,255,255,.045);border-bottom:1px solid rgba(255,255,255,.08)}
+  .brand{flex:1}
+  .brand .m{font-size:4.2vh;font-weight:600;letter-spacing:.12em}
+  .brand .p{font-size:2.2vh;color:#93a297;letter-spacing:.12em;margin-top:.7vh;text-transform:uppercase}
+  .tgl{flex:1;text-align:center}
+  .tgl .tm{font-size:3.4vh;color:#d9ddd6;font-weight:600}
+  .tgl .th{font-size:2.9vh;color:#d6b36a;margin-top:.5vh}
+  .jambox{flex:1;text-align:right}
+  .jam{font-size:11vh;font-weight:300;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .jam span{color:#d6b36a}
+  main{flex:1 1 65vh;display:flex;align-items:center;position:relative;min-height:0;padding:0 3.5vw;gap:3vw}
+  .hero{flex:1.4;text-align:center}
+  .keg{flex:1;border:1px solid rgba(255,255,255,.09);border-radius:2vh;background:rgba(255,255,255,.035);
+    padding:2.5vh 2vw;max-height:58vh;overflow:hidden}
+  .keg h3{font-size:2.6vh;letter-spacing:.24em;color:#d6b36a;font-weight:700}
+  .keg .hr{font-size:2vh;color:#93a297;margin-top:1vh}
+  .ev{margin-top:1.8vh;padding-top:1.8vh;border-top:1px solid rgba(255,255,255,.09)}
+  .ev:first-of-type{margin-top:2.2vh}
+  .ev .t{font-size:3.4vh;font-weight:600}
+  .ev .t b{color:#d6b36a}
+  .ev .d{font-size:2.5vh;color:#c7cec6;margin-top:.6vh}
+  .ev .u{font-size:2.2vh;color:#93a297;margin-top:.4vh}
+  .mode{font-size:3.2vh;letter-spacing:.4em;font-weight:600;color:#d6b36a}
+  .shalat{font-size:17vh;font-weight:300;line-height:1;margin-top:1vh}
+  .cd{font-size:13vh;font-weight:300;color:#fff;margin-top:1vh;font-variant-numeric:tabular-nums}
+  .sub{font-size:3.4vh;color:#93a297;margin-top:1.5vh}
+  .sched{flex:0 0 15vh;display:grid;grid-template-columns:repeat(7,1fr);gap:.8vw;padding:0 3.5vw;align-items:stretch}
+  .c{border:1px solid rgba(255,255,255,.09);border-radius:1.5vh;background:rgba(255,255,255,.035);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1vh .5vw}
+  .c .n{font-size:2.1vh;letter-spacing:.12em;color:#93a297;font-weight:600}
+  .c .t{font-size:5.2vh;font-weight:400;margin-top:.6vh;font-variant-numeric:tabular-nums}
+  .c.nx{border-color:rgba(214,179,106,.55);background:rgba(214,179,106,.12)}
+  .c.nx .n,.c.nx .t{color:#d6b36a}
+  .c.ps{opacity:.5}
+  footer{flex:0 0 5vh;display:flex;align-items:center;background:rgba(255,255,255,.05);
+    border-top:1px solid rgba(255,255,255,.08);overflow:hidden}
+  .lb{flex:0 0 auto;height:100%;display:flex;align-items:center;background:#d6b36a;color:#08110c;
+    font-size:1.8vh;font-weight:800;letter-spacing:.22em;padding:0 1.5vw}
+  .tx{flex:1;white-space:nowrap;overflow:hidden;font-size:3vh;color:#c7cec6;padding:0 1.5vw;display:flex;align-items:center}
+  .tx-inner{display:inline-block;white-space:nowrap;animation:run 28s linear infinite}
+  .tx span{margin-right:3vw}
+  .tx .g{color:#d6b36a}
+  .tx .hl{color:#d6b36a;font-weight:700}
+  @keyframes run{0%{transform:translateX(15vw)}100%{transform:translateX(-100%)}}
+  #adz{position:absolute;inset:0;z-index:10;display:none;background:#06110c;
+    align-items:center;justify-content:center;flex-direction:column;text-align:center}
+  #adz.on{display:flex}
+  #adz .f{font-size:7vh;letter-spacing:.3em;color:#d6b36a;animation:pl 1.1s infinite;max-width:94vw}
+  #adz .n{font-size:26vh;font-weight:300;line-height:1;max-width:94vw}
+  #adz .c{font-size:20vh;color:#fff;font-variant-numeric:tabular-nums;margin-top:1vh}
+  #adz .s{font-size:4.5vh;letter-spacing:.14em;color:#c7cec6;margin-top:2vh;max-width:94vw}
+  @keyframes pl{0%,100%{opacity:1}50%{opacity:.25}}
+</style>
+</head>
+<body>
+<div id="q"><div class="in">
+  <header>
+    <div class="brand"><div class="m">MASJID QIBLATIN</div><div class="p">Palembang</div></div>
+    <div class="tgl"><div class="tm" id="tm">—</div><div class="th" id="th">—</div></div>
+    <div class="jambox"><div class="jam" id="jam">--<span>:</span>--</div></div>
+  </header>
+  <main><div class="hero">
+    <div class="mode" id="mode">BERIKUTNYA</div>
+    <div class="shalat" id="sn">—</div>
+    <div class="cd" id="cd">--:--:--</div>
+    <div class="sub">Adzan <b id="st">--:--</b> WIB · <span id="rm"></span></div>
+  </div><div class="keg">
+    <h3>KEGIATAN MASJID</h3>
+    <div class="hr">Jadwal kegiatan</div>
+    <div id="ev"></div>
+  </div></main>
+  <div class="sched" id="sc"></div>
+  <footer><div class="lb">INFO</div><div class="tx" id="tx"><div class="tx-inner" id="txin">
+    <span>Selamat datang di Masjid Qiblatin</span><span class="g">•</span>
+    <span>Matikan dering ponsel</span><span class="g">•</span><span id="jum">Jumat --/-- · Muazin -- · Khotib --</span><span class="g">•</span><span>Rapikan shaf</span>
+  </div></div></footer>
+  <div id="adz"><div class="f" id="af">ADZAN</div>
+    <div class="n" id="an">MAGHRIB</div><div class="c" id="ac">05:00</div>
+    <div class="s" id="as">MATIKAN DERING PONSEL · SEGERALAH BERWUDHU</div>
+    <div class="s" id="ax" style="font-size:2.6vh;color:#93a297;margin-top:1vh"></div></div>
+  <button id="sim" style="position:fixed;right:1vw;bottom:7vh;z-index:20;font-size:1.8vh;
+    padding:1.2vh 1.8vw;border-radius:99px;border:1px solid rgba(214,179,106,.5);
+    background:rgba(214,179,106,.12);color:#d6b36a;cursor:pointer">SIMULASI ADZAN</button>
+  <button id="sim2" style="position:fixed;right:1vw;bottom:14vh;z-index:20;font-size:1.8vh;display:none;
+    padding:1.2vh 1.8vw;border-radius:99px;border:1px solid rgba(214,179,106,.5);
+    background:rgba(214,179,106,.12);color:#d6b36a;cursor:pointer">SIM IQAMAH → SHOLAT</button>
+</div></div>
+<script>
+const LAT=-2.976,LON=104.775,IHT=2,GAP=5,FARDHU=10;
+const SUNNAH={subuh:2,dzuhur:4,ashar:0,maghrib:2,isya:2};
+const P=[["imsak","IMSAK"],["subuh","SUBUH"],["terbit","TERBIT"],["dzuhur","DZUHUR"],
+  ["ashar","ASHAR"],["maghrib","MAGHRIB"],["isya","ISYA"]];
+const HARI=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+const BLN=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const HJR=["Muharram","Safar","Rabiul Awal","Rabiul Akhir","Jumadil Awal","Jumadil Akhir","Rajab","Sya'ban","Ramadhan","Syawal","Dzulqa'dah","Dzulhijjah"];
+const RM={1447:{s:"2026-02-18",n:30},1448:{s:"2027-02-07",n:30},1449:{s:"2028-01-28",n:30}};
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,"0");
+const fixH=h=>{h%=24;return h<0?h+24:h};
+const fixA=a=>{a-=360*Math.floor(a/360);return a<0?a+360:a};
+function sun(jd){const dd=jd-2451545,g=fixA(357.529+0.98560028*dd),q=fixA(280.459+0.98564736*dd);
+  const l=fixA(q+1.915*Math.sin(g*Math.PI/180)+0.02*Math.sin(2*g*Math.PI/180));
+  const e=23.439-0.00000036*dd;
+  const ra=Math.atan2(Math.cos(e*Math.PI/180)*Math.sin(l*Math.PI/180),Math.cos(l*Math.PI/180))*180/Math.PI/15;
+  return [Math.asin(Math.sin(e*Math.PI/180)*Math.sin(l*Math.PI/180))*180/Math.PI,q/15-fixH(ra)]}
+function midD(jd,t){return fixH(12-sun(jd+t)[1])}
+function sAT(jd,ang,t,bf){const d=sun(jd+t)[0],noon=midD(jd,t);
+  const a=Math.sin(ang*Math.PI/180),b=Math.sin(d*Math.PI/180)*Math.sin(LAT*Math.PI/180);
+  const c=Math.cos(d*Math.PI/180)*Math.cos(LAT*Math.PI/180);
+  return noon+(bf?-1:1)*Math.acos(Math.min(1,Math.max(-1,(-a-b)/c)))*180/Math.PI/15}
+function asrT(jd,t){const d=sun(jd+t)[0];
+  return sAT(jd,-Math.atan(1/(1+Math.tan(Math.abs(LAT-d)*Math.PI/180)))*180/Math.PI,t,false)}
+function F(h){let H=Math.floor(h),M=Math.round((h-H)*60)+IHT;if(M>=60){H++;M-=60}return pad(H%24)+":"+pad(M)}
+function jul(y,m,d){if(m<=2){y--;m+=12}const a=Math.floor(y/100);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+2-a+Math.floor(a/4)-1524.5}
+function jadwal(d){const jd=jul(d.getFullYear(),d.getMonth()+1,d.getDate())-LON/360,tz=-d.getTimezoneOffset()/60;
+  const su=fixH(sAT(jd,20,5/24,true)+tz-LON/15),noon=midD(jd,12/24);
+  const tb=fixH(noon-(sAT(jd,.833,6/24,false)-noon)+tz-LON/15);
+  return {imsak:F(su-10/60),subuh:F(su),terbit:F(tb),
+    dzuhur:F(noon+tz-LON/15),ashar:F(asrT(jd,13/24)+tz-LON/15),
+    maghrib:F(sAT(jd,.833,18/24,false)+tz-LON/15),isya:F(sAT(jd,18,18/24,false)+tz-LON/15)}}
+function hijr(d){try{const p=new Intl.DateTimeFormat("en-u-ca-islamic-umalqura",
+  {day:"numeric",month:"numeric",year:"numeric"}).formatToParts(d);
+  const g=t=>p.find(x=>x.type===t).value,m=+g("month");
+  return g("day")+" "+HJR[m-1]+" "+g("year").replace(/\D/g,"")+" H"}catch(e){return"— H"}}
+function ram(d){const s=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  for(const h of Object.keys(RM)){const r=RM[h],e=new Date(r.s);e.setDate(e.getDate()+r.n-1);
+    const es=e.getFullYear()+"-"+pad(e.getMonth()+1)+"-"+pad(e.getDate());
+    if(s>=r.s&&s<=es)return "PUASA "+(Math.round((d-new Date(r.s))/864e5)+1)+"/"+r.n+" · "}return""}
+const hm=s=>{const[a,b]=s.split(":").map(Number);return a*3600+b*60};
+let ad=null,lk="",ld="";
+/* ============ PETUGAS JUMAT (edit tiap pekan) ============ */
+const JUMAT={muazin:"Ust. Ahmad",khotib:"KH. Abdullah"};
+function jumatNext(d){const t=new Date(d);let add=(5-t.getDay()+7)%7;if(add===0)add=7;t.setDate(t.getDate()+add);return t}
+/* ============ KEGIATAN (edit sesuai jadwal masjid) ============ */
+const KEGIATAN=[
+  {hari:[0],judul:"Ceramah Subuh",ket:"Ba'da Subuh",ust:"Ust. Ahmad"},
+  {hari:[5],judul:"Sholat Jumat",ket:"12:00 WIB",ust:"KH. Abdullah"},
+  {hari:[2,4],judul:"Pengajian Rutin",ket:"Ba'da Maghrib",ust:"Ust. Hidayat"},
+  /* sekali jalan: {tgl:"2026-11-15",judul:"Tabligh Akbar",ket:"08:00 WIB",ust:"Ust. Fulan"}, */
+];
+function renderKeg(d){const box=$("ev");box.innerHTML="";
+  const wd=d.getDay(),hr=HARI[wd]+", "+d.getDate()+" "+BLN[d.getMonth()]+" "+d.getFullYear();
+  const ts=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  box.innerHTML='<div class="ev"><div class="t">Hari ini · <b>'+hr+'</b></div></div>';
+  const ada=KEGIATAN.filter(k=>(k.tgl&&k.tgl===ts)||(!k.tgl&&k.hari.includes(wd)));
+  (ada.length?[{judul:"-- TIDAK ADA --",ket:"",ust:"",tgl:""}]:ada).forEach(k=>{
+    const tgl=k.tgl||(d.getDate()+' '+BLN[d.getMonth()]+' '+d.getFullYear());
+    box.innerHTML+='<div class="ev"><div class="t">'+k.judul+'</div>'+(k.ket?'<div class="d">'+tgl+' · '+k.ket+'</div><div class="u">'+k.ust+'</div>':'')+'</div>'});
+  const nx=KEGIATAN.map(k=>{let a=(k.hari.map(h=>(h-wd+7)%7).sort((a,b)=>a-b)[0]);return {k,a}})
+    .filter(x=>x.a>0).sort((x,y)=>x.a-y.a)[0];
+  if(nx){const t=new Date(d);t.setDate(t.getDate()+nx.a);
+    box.innerHTML+='<div class="ev"><div class="t">Berikutnya · <b>'+HARI[t.getDay()]+', '+t.getDate()+' '+BLN[t.getMonth()]+'</b></div><div class="d">'+nx.k.judul+' · '+nx.k.ket+'</div><div class="u">'+nx.k.ust+'</div></div>'}}
+function tick(){const d=new Date(),J=jadwal(d);
+  renderKeg(d);
+  $("jam").innerHTML=pad(d.getHours())+"<span>:</span>"+pad(d.getMinutes());
+  $("tm").textContent=HARI[d.getDay()]+", "+d.getDate()+" "+BLN[d.getMonth()]+" "+d.getFullYear();
+  $("th").textContent=hijr(d);
+  $("rm").textContent=ram(d);
+  const jn=jumatNext(d);
+  $("jum").textContent="Jumat "+jn.getDate()+"/"+(jn.getMonth()+1)+" · Muazin "+JUMAT.muazin+" · Khotib "+JUMAT.khotib;
+  const ns=d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
+  const main=[1,3,4,5,6].map(i=>({k:P[i][0],l:P[i][1],s:hm(J[P[i][0]])}));
+  let nx=main.find(x=>x.s>ns);
+  const nxs=nx?nx.s:hm(J.subuh)+86400;
+  if(!nx)nx={l:"SUBUH",k:"subuh"};
+  $("sn").textContent=nx.l;$("st").textContent=J[nx.k];
+  const rm=nxs-ns,h=Math.floor(rm/3600);
+  $("cd").textContent=(h>0?h+":"+pad(Math.floor(rm%3600/60)):pad(Math.floor(rm/60)))+":"+pad(rm%60);
+  const sc=$("sc");sc.innerHTML="";
+  P.forEach(([k,l])=>{const s=hm(J[k]),el=document.createElement("div");
+    el.className="c"+(k===nx.k?" nx":s<=ns?" ps":"");
+    el.innerHTML='<div class="n">'+l+'</div><div class="t">'+J[k]+'</div>';sc.appendChild(el)});
+  if(rm===0){const t=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+    if(lk!==nx.k||ld!==t){lk=nx.k;ld=t;startAd(nx.l)}}
+  if(ad){const r=ad.dl-Date.now();
+    $("ac").textContent=ad.f===3?"--:--":pad(Math.max(0,Math.floor(r/6e4)))+":"+pad(Math.max(0,Math.floor(r%6e4/1e3)));
+    if(r<=0){
+      if(ad.f===1){enterIqamah()}
+      else if(ad.f===1.5){doIqamah()}
+      else if(ad.f===2){enterFardhu()}
+      else{$("adz").classList.remove("on");$("ac").style.display="";$("sim2").style.display="none";ad=null}}}
+}
+function sunnahOf(nama){const k=nama.toLowerCase().replace("dzuhur","dzuhur");return SUNNAH[k]||0}
+function enterIqamah(){const nm=$("an").textContent,sn=sunnahOf(nm);
+  if(sn>0){ad={f:1.5,dl:Date.now()+sn*6e4};$("af").textContent="SHOLAT SUNNAH";
+    $("as").textContent="KESEMPATAN SHOLAT SUNNAH "+sn+" RAKAAT";
+    $("ax").textContent="MENUJU IQAMAH";$("sim2").style.display="block"}
+  else{doIqamah()}}
+function doIqamah(){ad={f:2,dl:Date.now()+GAP*6e4};$("af").textContent="IQAMAH";
+  $("as").textContent="LURUSKAN & RAPATKAN SHAF";
+  $("ax").textContent="IQAMAH MENUJU SHOLAT FARDHU";$("sim2").style.display="none"}
+function enterFardhu(){ad={f:3,dl:Date.now()+FARDHU*6e4};$("af").textContent="SHOLAT FARDHU "+$("an").textContent;
+  $("as").textContent="SELAMAT MENUNAIKAN SHOLAT BERJAMAAH";$("ax").textContent="";
+  $("ac").style.display="none";$("sim2").style.display="none"}
+function startAd(nama){ad={f:1,dl:Date.now()+GAP*6e4};$("adz").classList.add("on");
+  $("an").textContent=nama;$("af").textContent="ADZAN";
+  $("as").textContent="MATIKAN DERING PONSEL · SEGERALAH BERWUDHU";
+  $("ax").textContent="ADZAN BERKUMANDANG";$("sim2").style.display="block"}
+$("sim").onclick=()=>{const d=new Date(),J=jadwal(d),ns=d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
+  const main=[1,3,4,5,6].map(i=>({k:P[i][0],l:P[i][1],s:hm(J[P[i][0]])}));
+  let nx=main.find(x=>x.s>ns);if(!nx)nx={l:"SUBUH"};startAd(nx.l)};
+$("sim2").onclick=()=>{if(ad&&(ad.f===1||ad.f===1.5))doIqamah()};
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
